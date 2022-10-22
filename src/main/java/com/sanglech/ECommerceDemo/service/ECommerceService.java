@@ -1,10 +1,9 @@
 package com.sanglech.ECommerceDemo.service;
 
-import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ECommerceService implements GraphQLQueryResolver {
+public class ECommerceService {
 
     public String getHello() {
         return "Hello World";
