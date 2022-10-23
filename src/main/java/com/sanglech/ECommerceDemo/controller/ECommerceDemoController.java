@@ -22,7 +22,10 @@ public class ECommerceDemoController {
         return this.eCommerceService.getHello();
     }
     @QueryMapping
-    public FinalPriceResponse getFinalPrice(@Argument String price){
-        return this.eCommerceService.getFinalPrice(price);
+    public FinalPriceResponse getFinalPrice(@Argument String price,
+                                            @Argument Float priceModeifer,
+                                            @Argument String paymentMethod,
+                                            @Argument String dateTime){
+        return this.eCommerceService.getFinalPrice(price,priceModeifer,paymentMethod,dateTime);
     }
 }

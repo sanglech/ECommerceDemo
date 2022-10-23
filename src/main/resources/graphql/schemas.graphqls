@@ -1,6 +1,6 @@
 type Query {
     getHello:String!
-    getFinalPrice(price:String!):finalPriceResponse
+    getFinalPrice(price:String!, priceModeifer: Float!,paymentMethod:String!,dateTime:String!):finalPriceResponse
 }
 
 type finalPriceResponse{
