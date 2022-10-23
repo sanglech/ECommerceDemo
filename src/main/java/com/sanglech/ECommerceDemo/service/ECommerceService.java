@@ -70,7 +70,7 @@ public class ECommerceService {
 
         String requestHourDate = dateTime.getYear() + "-"
                 + String.format("%02d",dateTime.getMonthValue()) + "-"
-                + String.format("%02d",dateTime.getDayOfMonth()) + "-"
+                + String.format("%02d",dateTime.getDayOfMonth())
                 + "T"
                 + String.format("%02d",dateTime.getHour()) +
                 ":00:00Z";
