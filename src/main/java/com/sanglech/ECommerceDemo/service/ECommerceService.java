@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,29 +18,38 @@ import static com.sanglech.ECommerceDemo.constants.Constants.paymentMethodPoints
 public class ECommerceService {
 
     private final HashMap<String, SaleDAO> history = new HashMap<>();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX");
     public String getHello() {
         return "Hello World";
     }
 
     public FinalPriceResponse getFinalPrice(String price, Float priceModeifer, String paymentMethod, String dateTime){
         FinalPriceResponse response = new FinalPriceResponse();
-        float finalPrice = Float.parseFloat(price) * priceModeifer;
+        paymentMethod = paymentMethod.toUpperCase();
+        float finalPrice;
         double pointMultiplier;
+        try {
+            finalPrice = Float.parseFloat(price) * priceModeifer;
+            if(paymentMethodPointsMap.containsKey(paymentMethod)){
+                pointMultiplier = paymentMethodPointsMap.get(paymentMethod);
+            } else {
+                throw new InvalidInputException("Invalid Payment Method. Please select a valid payment method.");
+            }
+            int pointVal = (int) (pointMultiplier * Float.parseFloat(price));
+            response.setFinalPrice(String.valueOf(finalPrice));
+            response.setPoints(pointVal);
 
-        if(paymentMethodPointsMap.containsKey(paymentMethod)){
-            pointMultiplier = paymentMethodPointsMap.get(paymentMethod);
-        } else {
-           throw new InvalidInputException("Invalid Payment Method. Please select a valid payment method.");
+            LocalDateTime requestDateTime = LocalDateTime.parse(dateTime, formatter);
+            addToHistory(requestDateTime, finalPrice, pointVal);
+            return response;
         }
-
-        int pointVal = (int) (pointMultiplier * Float.parseFloat(price));
-        response.setFinalPrice(String.valueOf(finalPrice));
-        response.setPoints(pointVal);
-
-        addToHistory(dateTime, finalPrice, pointVal);
-
-        return response;
+        catch(NumberFormatException ex){
+            throw new InvalidInputException("Invalid Price Input.");
+        } catch (DateTimeParseException ex){
+            throw new InvalidInputException("Invalid Date Input.");
+        } catch(Exception ex){
+            throw new InvalidInputException("Invalid Payment Method.");
+        }
     }
 
     public List<SaleDAO> getSalesHistory(String startDate, String endDate ) {
@@ -56,14 +66,14 @@ public class ECommerceService {
         return response;
     }
 
-    private void addToHistory(String dateTime, float finalPrice, int pointVal) {
-        LocalDateTime requestDateTime = LocalDateTime.parse(dateTime, formatter);
-        String requestHourDate = requestDateTime.getYear() + "-"
-                + requestDateTime.getMonthValue() + "-"
-                + requestDateTime.getDayOfMonth() + "-"
+    private void addToHistory(LocalDateTime dateTime, float finalPrice, int pointVal) {
+
+        String requestHourDate = dateTime.getYear() + "-"
+                + String.format("%02d",dateTime.getMonthValue()) + "-"
+                + String.format("%02d",dateTime.getDayOfMonth()) + "-"
                 + "T"
-                + requestDateTime.getHour() +
-                "00:00";
+                + String.format("%02d",dateTime.getHour()) +
+                ":00:00Z";
 
 
         if(history.containsKey(requestHourDate)){
