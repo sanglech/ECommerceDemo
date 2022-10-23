@@ -1,7 +1,7 @@
 package com.sanglech.ECommerceDemo.service;
 
-import com.sanglech.ECommerceDemo.FinalPriceResponse;
-import com.sanglech.ECommerceDemo.SaleDAO;
+import com.sanglech.ECommerceDemo.dao.FinalPriceResponse;
+import com.sanglech.ECommerceDemo.dao.SaleDAO;
 import com.sanglech.ECommerceDemo.exception.InvalidInputException;
 import org.springframework.stereotype.Component;
 

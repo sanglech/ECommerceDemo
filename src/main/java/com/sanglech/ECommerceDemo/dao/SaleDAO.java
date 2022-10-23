@@ -1,4 +1,4 @@
-package com.sanglech.ECommerceDemo;
+package com.sanglech.ECommerceDemo.dao;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FinalPriceResponse {
-    private String finalPrice;
+public class SaleDAO {
+    private String dateTime;
+    private String sales;
     private Integer points;
 }

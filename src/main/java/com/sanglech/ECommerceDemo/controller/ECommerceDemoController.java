@@ -1,7 +1,7 @@
 package com.sanglech.ECommerceDemo.controller;
 
-import com.sanglech.ECommerceDemo.FinalPriceResponse;
-import com.sanglech.ECommerceDemo.SaleDAO;
+import com.sanglech.ECommerceDemo.dao.FinalPriceResponse;
+import com.sanglech.ECommerceDemo.dao.SaleDAO;
 import com.sanglech.ECommerceDemo.service.ECommerceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
