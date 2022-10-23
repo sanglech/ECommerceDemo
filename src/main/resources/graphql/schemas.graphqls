@@ -1,3 +1,9 @@
 type Query {
     getHello:String!
+    getFinalPrice(price:String!):finalPriceResponse
+}
+
+type finalPriceResponse{
+    finalPrice:String!
+    points: Int!
 }
