@@ -1,6 +1,7 @@
 package com.sanglech.ECommerceDemo.service;
 
 import com.sanglech.ECommerceDemo.dao.FinalPriceResponse;
+import com.sanglech.ECommerceDemo.dao.PaymentMethodRates;
 import com.sanglech.ECommerceDemo.dao.SaleDAO;
 import com.sanglech.ECommerceDemo.exception.InvalidInputException;
 import org.springframework.stereotype.Component;
@@ -29,9 +30,14 @@ public class ECommerceService {
         float finalPrice;
         double pointMultiplier;
         try {
-            finalPrice = Float.parseFloat(price) * priceModeifer;
             if(paymentMethodPointsMap.containsKey(paymentMethod)){
-                pointMultiplier = paymentMethodPointsMap.get(paymentMethod);
+                PaymentMethodRates temp = paymentMethodPointsMap.get(paymentMethod);
+                if(priceModeifer>=temp.getLowRate() && priceModeifer <= temp.getHighRate()){
+                    finalPrice = Float.parseFloat(price) * priceModeifer;
+                    pointMultiplier = paymentMethodPointsMap.get(paymentMethod).getPointRate();
+                } else {
+                    throw new InvalidInputException("Invalid price modifier for the payment method: "+paymentMethod);
+                }
             } else {
                 throw new InvalidInputException("Invalid Payment Method. Please select a valid payment method.");
             }
@@ -47,8 +53,8 @@ public class ECommerceService {
             throw new InvalidInputException("Invalid Price Input.");
         } catch (DateTimeParseException ex){
             throw new InvalidInputException("Invalid Date Input.");
-        } catch(Exception ex){
-            throw new InvalidInputException("Invalid Payment Method.");
+        } catch(InvalidInputException ex){
+            throw new InvalidInputException(ex.getMessage());
         }
     }
 
