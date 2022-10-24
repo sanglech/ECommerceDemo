@@ -1,4 +1,4 @@
-# AnyMind Ecommernce Demo
+# AnyMind Ecommerce Demo
 
 ## Technology used
 
