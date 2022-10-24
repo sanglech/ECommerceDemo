@@ -40,7 +40,6 @@
 - Possible Integer overflow with points, if user enter a price that is too large.
 - Concurrency and race condition issues.
 - Values in query need to follow exact format or will throw an InvalidInputException.
-- No validation of priceModifier.
 
 ## Future Improvements
 
